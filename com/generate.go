@@ -26,8 +26,8 @@ type schema struct {
 func Generate(args []string) error {
 	var i, o string
 	if err := x.FlagsParse(args,
-		x.Flag(&i, "i", "", "input dir holding all XSD files"),
-		x.Flag(&o, "o", "", "Go package output dir"),
+		x.Flag(&i, "i", "input dir holding all XSD files"),
+		x.Flag(&o, "o", "Go package output dir"),
 	); err != nil {
 		return err
 	}

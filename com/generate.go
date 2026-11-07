@@ -21,15 +21,21 @@ import (
 )
 
 func newGenerateCmd(c *Cli) *cobra.Command {
-	return &cobra.Command{
-		Use:   "generate -i <xsd dir> -o <output dir>",
-		Short: "Generate Go document packages from ISO 20022 XSD files",
-		// com.Generate parses its own -i/-o flags.
-		DisableFlagParsing: true,
-		RunE: c.wrap(func(_ *Cli, _ *cobra.Command, args []string) error {
-			return Generate(args)
+	var in, out string
+	cmd := &cobra.Command{
+		Use:                   "generate -i <xsd dir> -o <output dir>",
+		Short:                 "Generate Go document packages from ISO 20022 XSD files",
+		Args:                  cobra.NoArgs,
+		DisableFlagsInUseLine: true,
+		RunE: c.wrap(func(_ *Cli, _ *cobra.Command, _ []string) error {
+			return generate(in, out)
 		}),
 	}
+	cmd.Flags().StringVarP(&in, "input", "i", "", "input dir holding all XSD files")
+	cmd.Flags().StringVarP(&out, "output", "o", "", "Go package output dir")
+	_ = cmd.MarkFlagRequired("input")
+	_ = cmd.MarkFlagRequired("output")
+	return cmd
 }
 
 type schema struct {
@@ -46,6 +52,10 @@ func Generate(args []string) error {
 	); err != nil {
 		return err
 	}
+	return generate(i, o)
+}
+
+func generate(i, o string) error {
 	if i == "" || o == "" {
 		return fmt.Errorf("missing required flags: -i and -o")
 	}
@@ -59,18 +69,18 @@ func Generate(args []string) error {
 		// head.* schemas define the business application header (root
 		// element AppHdr, not Document), so they can't be loaded as documents.
 		if strings.HasPrefix(filepath.Base(f), "head.") {
-			log.Printf("skipping: %v", f)
+			log.Infof("skipping: %v", f)
 			continue
 		}
-		log.Printf("finished: %v", f)
+		log.Infof("finished: %v", f)
 		pkg, folder, err := generateFile(o, f)
 		if err != nil {
-			log.Printf("failed to generate go package for '%s': %s\n", f, err)
+			log.Errorf("failed to generate go package for '%s': %s", f, err)
 			continue
 		}
 		targetNS, err := getTargetNS(f)
 		if err != nil {
-			log.Printf("failed to get target namespace for '%s': %s\n", f, err)
+			log.Errorf("failed to get target namespace for '%s': %s", f, err)
 			return err
 		}
 		if set[targetNS] {
@@ -82,7 +92,7 @@ func Generate(args []string) error {
 			TargetNS: targetNS,
 			Folder:   folder,
 		})
-		log.Printf(" - added: %s\n", targetNS)
+		log.Infof(" - added: %s", targetNS)
 	}
 	return renderISO20022Package(o, schemas)
 }

@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path"
@@ -13,6 +14,9 @@ import (
 	"github.com/gocolly/colly/v2"
 	"github.com/spf13/cobra"
 )
+
+// progress receives informational messages; --quiet sets it to io.Discard.
+var progress io.Writer = os.Stdout
 
 func newCrawlCmd(c *Cli) *cobra.Command {
 	return &cobra.Command{
@@ -32,7 +36,7 @@ func Crawl(args []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Writing files to '%s'\n", dir)
+	fmt.Fprintf(progress, "Writing files to '%s'\n", dir)
 
 	// Instantiate default collector
 	c := colly.NewCollector(
@@ -52,49 +56,49 @@ func Crawl(args []string) error {
 
 	// Visit all download links of the current ISO 20022 message catalogue
 	c.OnHTML("a[href$=download][aria-label=Download]", func(e *colly.HTMLElement) {
-		fmt.Printf("AAA %s\n", e.Attr("href"))
+		fmt.Fprintf(progress, "AAA %s\n", e.Attr("href"))
 		err := e.Request.Visit(e.Attr("href"))
 		if err != nil {
-			fmt.Printf("Failed to visit %s: %s\n", e.Attr("href"), err)
+			fmt.Fprintf(os.Stderr, "Failed to visit %s: %s\n", e.Attr("href"), err)
 		}
 	})
 
 	// Visit all download links of the ISO 20022 message catalogue archive
 	c.OnHTML("a[href$=download][aria-label='Download Complete Message Set']", func(e *colly.HTMLElement) {
-		fmt.Printf("BBB %s\n", e.Attr("href"))
+		fmt.Fprintf(progress, "BBB %s\n", e.Attr("href"))
 		err := e.Request.Visit(e.Attr("href"))
 		if err != nil {
-			fmt.Printf("Failed to visit %s: %s\n", e.Attr("href"), err)
+			fmt.Fprintf(os.Stderr, "Failed to visit %s: %s\n", e.Attr("href"), err)
 		}
 	})
 
 	// Handle paging
 	c.OnHTML("a[href][title^='Go to page']", func(e *colly.HTMLElement) {
-		fmt.Printf("CCC next page\n")
+		fmt.Fprintf(progress, "CCC next page\n")
 		err := e.Request.Visit(e.Attr("href"))
 		if err != nil {
-			fmt.Printf("Failed to visit %s: %s\n", e.Attr("href"), err)
+			fmt.Fprintf(os.Stderr, "Failed to visit %s: %s\n", e.Attr("href"), err)
 		}
 	})
 
 	// Download message catalogue zip files
 	c.OnResponse(func(r *colly.Response) {
-		fmt.Printf("Response received: %s\n", r.Request.URL)
+		fmt.Fprintf(progress, "Response received: %s\n", r.Request.URL)
 		if strings.Index(r.Headers.Get("Content-Type"), "application/zip") > -1 {
-			fmt.Printf("Processing %s\n", r.FileName())
+			fmt.Fprintf(progress, "Processing %s\n", r.FileName())
 			if err := unzipWriteFile(r.Body, dir); err != nil {
-				fmt.Printf("Failed to unzip file '%s': %s\n", r.FileName(), err)
+				fmt.Fprintf(os.Stderr, "Failed to unzip file '%s': %s\n", r.FileName(), err)
 			}
 		}
 	})
 
 	err = c.Visit("https://www.iso20022.org/iso-20022-message-definitions?page=0")
 	if err != nil {
-		fmt.Printf("Failed to visit %s: %s\n", "https://www.iso20022.org/iso-20022-message-definitions?page=0", err)
+		fmt.Fprintf(os.Stderr, "Failed to visit %s: %s\n", "https://www.iso20022.org/iso-20022-message-definitions?page=0", err)
 	}
 	err = c.Visit("https://www.iso20022.org/catalogue-messages/iso-20022-messages-archive?page=0")
 	if err != nil {
-		fmt.Printf("Failed to visit %s: %s\n", "https://www.iso20022.org/catalogue-messages/iso-20022-messages-archive?page=0", err)
+		fmt.Fprintf(os.Stderr, "Failed to visit %s: %s\n", "https://www.iso20022.org/catalogue-messages/iso-20022-messages-archive?page=0", err)
 	}
 	return nil
 }
@@ -117,10 +121,10 @@ func unzipWriteFile(data []byte, dir string) error {
 	for _, zipFile := range zipReader.File {
 		// we are only interested in xml schema and zip files
 		if path.Ext(zipFile.Name) != ".xsd" && path.Ext(zipFile.Name) != ".zip" {
-			fmt.Printf("ignoring[%s] %s\n", path.Ext(zipFile.Name), zipFile.Name)
+			fmt.Fprintf(progress, "ignoring[%s] %s\n", path.Ext(zipFile.Name), zipFile.Name)
 			continue
 		}
-		fmt.Printf("  extracting %s\n", zipFile.Name)
+		fmt.Fprintf(progress, "  extracting %s\n", zipFile.Name)
 		unzippedFileBytes, err := readZipFile(zipFile)
 		if err != nil {
 			return fmt.Errorf("failed to unzip file '%s': %s", zipFile.Name, err)

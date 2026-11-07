@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com
+package cli
 
 import (
 	"fmt"
@@ -118,4 +118,31 @@ func parseLevel(s string) (slog.Level, error) {
 		return 0, fmt.Errorf("invalid log level %q: use debug, info, warn or error", s)
 	}
 	return l, nil
+}
+
+func NewRootCommand(c *Cli) *cobra.Command {
+	var rootCmd = &cobra.Command{
+		Use:           "iso20022tpl",
+		Short:         "Convert ISO 20022 bank statements to CSV",
+		SilenceUsage:  false,
+		SilenceErrors: true,
+	}
+
+	rootCmd.PersistentFlags().String("log-level", "warn", "log level (debug,info,warn,error)")
+	rootCmd.PersistentFlags().Bool("json-log", false, "log as json")
+	rootCmd.PersistentFlags().Bool("log-functions", false, "include the source file and line in log messages")
+	rootCmd.PersistentFlags().BoolP("quiet", "q", false, "Suppress all normal output")
+
+	c.bindAllFlags(rootCmd)
+
+	rootCmd.AddCommand(
+		newVersionCmd(),
+		newJsonCmd(c),
+		newYamlCmd(c),
+		newTemplateCmd(c),
+		newCrawlCmd(c),
+		newGenerateCmd(c),
+	)
+
+	return rootCmd
 }

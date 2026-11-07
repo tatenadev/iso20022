@@ -1,4 +1,4 @@
-package com
+package cli
 
 import (
 	"archive/zip"

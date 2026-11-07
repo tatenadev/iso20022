@@ -18,11 +18,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/teghnet/iso20022/com"
+	"github.com/teghnet/iso20022/cli"
 )
 
 func main() {
-	c := com.NewCli()
+	c := cli.NewCli()
 	if err := c.RootCommand.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)

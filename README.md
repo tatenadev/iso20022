@@ -9,19 +9,17 @@ I've reorganized the repo to allow importing.
 
 ```text
 iso20022
-├── app - `main` package of the CLI
+├── iso20022tpl - `main` package of the CLI
 ├── cli - CLI commands (importable)
 ├── doc - generated document structs
 └── xsd - xsd files (sourced from iso20022.org)
 ```
 
-Build the CLI with:
+Install the CLI with:
 
 ```sh
-go build -o iso20022tpl ./app
+go install github.com/teghnet/iso20022/iso20022tpl@latest
 ```
-
-`go install github.com/teghnet/iso20022/app@latest` also works, but names the binary `app`.
 
 ## Usage
 

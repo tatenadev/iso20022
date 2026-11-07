@@ -1,0 +1,29 @@
+# Development Tooling
+.idea/
+.vscode/
+.claude/
+
+# Executable Binaries & Scripts
+/bin/*
+
+# Locals
+/.local/
+*.local.*
+
+# XDG
+/.cache/
+/.config/
+/.data/
+/.run/
+/.share/
+/.state/
+
+# Environment Variables
+*.env
+
+# Go Dependencies
+/vendor/
+
+# Go Workspace
+go.work
+go.work.sum

@@ -3,11 +3,15 @@ package cli
 import (
 	"archive/zip"
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/gabriel-vasile/mimetype"
@@ -137,13 +141,55 @@ func unzipWriteFile(data []byte, dir string) error {
 			continue
 		}
 
-		// store the extracted file
-		if err := ioutil.WriteFile(fmt.Sprintf("%s/%s", dir, zipFile.Name), unzippedFileBytes, 0o644); err != nil {
-			return fmt.Errorf("failed to save extracted file as '%s/%s': %s", dir, zipFile.Name, err)
+		if err := writeXSD(dir, zipFile.Name, unzippedFileBytes); err != nil {
+			return err
 		}
 	}
 
 	return nil
+}
+
+// uploadSuffix matches the "_0", "_1", ... that iso20022.org adds to the
+// names of schemas uploaded more than once (e.g. camt.053.001.14_0.xsd).
+var uploadSuffix = regexp.MustCompile(`_[0-9]+(\.xsd)$`)
+
+// xsdFileName returns the name an extracted schema is stored under: the
+// base name of the zip entry (so entries can't escape dir) without an
+// upload suffix.
+func xsdFileName(zipName string) string {
+	return uploadSuffix.ReplaceAllString(path.Base(zipName), "$1")
+}
+
+// writeXSD stores a schema extracted from a zip entry in dir. A schema whose
+// entry name had an upload suffix never replaces an existing file: if the
+// contents match it is skipped, otherwise a warning is printed.
+func writeXSD(dir, zipName string, data []byte) error {
+	name := xsdFileName(zipName)
+	target := filepath.Join(dir, name)
+	if name != path.Base(zipName) {
+		existing, err := os.ReadFile(target)
+		switch {
+		case err == nil && sameXSD(existing, data):
+			fmt.Fprintf(progress, "  skipping %s: same as %s\n", zipName, name)
+			return nil
+		case err == nil:
+			fmt.Fprintf(os.Stderr, "Keeping existing %s: %s has different contents\n", target, zipName)
+			return nil
+		case !errors.Is(err, fs.ErrNotExist):
+			return fmt.Errorf("failed to read '%s': %s", target, err)
+		}
+	}
+	if err := os.WriteFile(target, data, 0o644); err != nil {
+		return fmt.Errorf("failed to save extracted file as '%s': %s", target, err)
+	}
+	return nil
+}
+
+// sameXSD reports whether a and b are equal, ignoring CRLF vs LF line endings.
+func sameXSD(a, b []byte) bool {
+	crlf := []byte("\r\n")
+	lf := []byte("\n")
+	return bytes.Equal(bytes.ReplaceAll(a, crlf, lf), bytes.ReplaceAll(b, crlf, lf))
 }
 
 func readZipFile(zf *zip.File) ([]byte, error) {

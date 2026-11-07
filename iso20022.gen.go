@@ -100,7 +100,7 @@ import (
 	acmt_016_001_05 "github.com/teghnet/iso20022/doc/acmt/016/001/05"
 	acmt_017_001_01 "github.com/teghnet/iso20022/doc/acmt/017/001/01"
 	acmt_017_001_02 "github.com/teghnet/iso20022/doc/acmt/017/001/02"
-	acmt_017_001_03_0 "github.com/teghnet/iso20022/doc/acmt/017/001/03_0"
+	acmt_017_001_03 "github.com/teghnet/iso20022/doc/acmt/017/001/03"
 	acmt_017_001_04 "github.com/teghnet/iso20022/doc/acmt/017/001/04"
 	acmt_017_001_05 "github.com/teghnet/iso20022/doc/acmt/017/001/05"
 	acmt_018_001_01 "github.com/teghnet/iso20022/doc/acmt/018/001/01"
@@ -281,7 +281,7 @@ import (
 	auth_043_001_01 "github.com/teghnet/iso20022/doc/auth/043/001/01"
 	auth_044_001_01 "github.com/teghnet/iso20022/doc/auth/044/001/01"
 	auth_044_001_02 "github.com/teghnet/iso20022/doc/auth/044/001/02"
-	auth_044_001_03_1 "github.com/teghnet/iso20022/doc/auth/044/001/03_1"
+	auth_044_001_03 "github.com/teghnet/iso20022/doc/auth/044/001/03"
 	auth_045_001_01 "github.com/teghnet/iso20022/doc/auth/045/001/01"
 	auth_045_001_02 "github.com/teghnet/iso20022/doc/auth/045/001/02"
 	auth_045_001_03 "github.com/teghnet/iso20022/doc/auth/045/001/03"
@@ -1090,7 +1090,7 @@ import (
 	camt_056_001_06 "github.com/teghnet/iso20022/doc/camt/056/001/06"
 	camt_056_001_07 "github.com/teghnet/iso20022/doc/camt/056/001/07"
 	camt_056_001_08 "github.com/teghnet/iso20022/doc/camt/056/001/08"
-	camt_056_001_09_0 "github.com/teghnet/iso20022/doc/camt/056/001/09_0"
+	camt_056_001_09 "github.com/teghnet/iso20022/doc/camt/056/001/09"
 	camt_056_001_10 "github.com/teghnet/iso20022/doc/camt/056/001/10"
 	camt_056_001_11 "github.com/teghnet/iso20022/doc/camt/056/001/11"
 	camt_056_001_12 "github.com/teghnet/iso20022/doc/camt/056/001/12"
@@ -1691,7 +1691,7 @@ import (
 	pain_001_001_07 "github.com/teghnet/iso20022/doc/pain/001/001/07"
 	pain_001_001_08 "github.com/teghnet/iso20022/doc/pain/001/001/08"
 	pain_001_001_09 "github.com/teghnet/iso20022/doc/pain/001/001/09"
-	pain_001_001_10_1 "github.com/teghnet/iso20022/doc/pain/001/001/10_1"
+	pain_001_001_10 "github.com/teghnet/iso20022/doc/pain/001/001/10"
 	pain_001_001_11 "github.com/teghnet/iso20022/doc/pain/001/001/11"
 	pain_001_001_12 "github.com/teghnet/iso20022/doc/pain/001/001/12"
 	pain_001_001_13 "github.com/teghnet/iso20022/doc/pain/001/001/13"
@@ -2175,7 +2175,7 @@ import (
 	seev_037_001_10 "github.com/teghnet/iso20022/doc/seev/037/001/10"
 	seev_037_001_11 "github.com/teghnet/iso20022/doc/seev/037/001/11"
 	seev_037_001_12 "github.com/teghnet/iso20022/doc/seev/037/001/12"
-	seev_037_001_13_0 "github.com/teghnet/iso20022/doc/seev/037/001/13_0"
+	seev_037_001_13 "github.com/teghnet/iso20022/doc/seev/037/001/13"
 	seev_037_001_14 "github.com/teghnet/iso20022/doc/seev/037/001/14"
 	seev_037_001_15 "github.com/teghnet/iso20022/doc/seev/037/001/15"
 	seev_037_001_16 "github.com/teghnet/iso20022/doc/seev/037/001/16"
@@ -2200,7 +2200,7 @@ import (
 	seev_038_001_08 "github.com/teghnet/iso20022/doc/seev/038/001/08"
 	seev_038_001_09 "github.com/teghnet/iso20022/doc/seev/038/001/09"
 	seev_038_002_04 "github.com/teghnet/iso20022/doc/seev/038/002/04"
-	seev_038_002_05_0 "github.com/teghnet/iso20022/doc/seev/038/002/05_0"
+	seev_038_002_05 "github.com/teghnet/iso20022/doc/seev/038/002/05"
 	seev_038_002_06 "github.com/teghnet/iso20022/doc/seev/038/002/06"
 	seev_038_002_07 "github.com/teghnet/iso20022/doc/seev/038/002/07"
 	seev_038_002_08 "github.com/teghnet/iso20022/doc/seev/038/002/08"
@@ -2368,7 +2368,7 @@ import (
 	semt_003_001_11 "github.com/teghnet/iso20022/doc/semt/003/001/11"
 	semt_003_001_12 "github.com/teghnet/iso20022/doc/semt/003/001/12"
 	semt_003_002_09 "github.com/teghnet/iso20022/doc/semt/003/002/09"
-	semt_003_002_10_0 "github.com/teghnet/iso20022/doc/semt/003/002/10_0"
+	semt_003_002_10 "github.com/teghnet/iso20022/doc/semt/003/002/10"
 	semt_003_002_11 "github.com/teghnet/iso20022/doc/semt/003/002/11"
 	semt_004_001_02 "github.com/teghnet/iso20022/doc/semt/004/001/02"
 	semt_005_001_02 "github.com/teghnet/iso20022/doc/semt/005/001/02"
@@ -2395,7 +2395,7 @@ import (
 	semt_014_001_08 "github.com/teghnet/iso20022/doc/semt/014/001/08"
 	semt_014_001_09 "github.com/teghnet/iso20022/doc/semt/014/001/09"
 	semt_014_002_05 "github.com/teghnet/iso20022/doc/semt/014/002/05"
-	semt_014_002_06_0 "github.com/teghnet/iso20022/doc/semt/014/002/06_0"
+	semt_014_002_06 "github.com/teghnet/iso20022/doc/semt/014/002/06"
 	semt_014_002_07 "github.com/teghnet/iso20022/doc/semt/014/002/07"
 	semt_015_001_01 "github.com/teghnet/iso20022/doc/semt/015/001/01"
 	semt_015_001_02 "github.com/teghnet/iso20022/doc/semt/015/001/02"
@@ -2471,7 +2471,7 @@ import (
 	semt_019_001_11 "github.com/teghnet/iso20022/doc/semt/019/001/11"
 	semt_019_001_12 "github.com/teghnet/iso20022/doc/semt/019/001/12"
 	semt_019_002_07 "github.com/teghnet/iso20022/doc/semt/019/002/07"
-	semt_019_002_08_0 "github.com/teghnet/iso20022/doc/semt/019/002/08_0"
+	semt_019_002_08 "github.com/teghnet/iso20022/doc/semt/019/002/08"
 	semt_019_002_09 "github.com/teghnet/iso20022/doc/semt/019/002/09"
 	semt_019_002_10 "github.com/teghnet/iso20022/doc/semt/019/002/10"
 	semt_020_001_01 "github.com/teghnet/iso20022/doc/semt/020/001/01"
@@ -2504,7 +2504,7 @@ import (
 	semt_022_001_06 "github.com/teghnet/iso20022/doc/semt/022/001/06"
 	semt_022_001_07 "github.com/teghnet/iso20022/doc/semt/022/001/07"
 	semt_022_002_03 "github.com/teghnet/iso20022/doc/semt/022/002/03"
-	semt_022_002_04_0 "github.com/teghnet/iso20022/doc/semt/022/002/04_0"
+	semt_022_002_04 "github.com/teghnet/iso20022/doc/semt/022/002/04"
 	semt_022_002_05 "github.com/teghnet/iso20022/doc/semt/022/002/05"
 	semt_023_001_01 "github.com/teghnet/iso20022/doc/semt/023/001/01"
 	semt_023_001_02 "github.com/teghnet/iso20022/doc/semt/023/001/02"
@@ -2674,7 +2674,7 @@ import (
 	sese_020_001_08 "github.com/teghnet/iso20022/doc/sese/020/001/08"
 	sese_020_001_09 "github.com/teghnet/iso20022/doc/sese/020/001/09"
 	sese_020_002_05 "github.com/teghnet/iso20022/doc/sese/020/002/05"
-	sese_020_002_06_0 "github.com/teghnet/iso20022/doc/sese/020/002/06_0"
+	sese_020_002_06 "github.com/teghnet/iso20022/doc/sese/020/002/06"
 	sese_020_002_07 "github.com/teghnet/iso20022/doc/sese/020/002/07"
 	sese_021_001_01 "github.com/teghnet/iso20022/doc/sese/021/001/01"
 	sese_021_001_02 "github.com/teghnet/iso20022/doc/sese/021/001/02"
@@ -2685,7 +2685,7 @@ import (
 	sese_021_001_07 "github.com/teghnet/iso20022/doc/sese/021/001/07"
 	sese_021_001_08 "github.com/teghnet/iso20022/doc/sese/021/001/08"
 	sese_021_002_04 "github.com/teghnet/iso20022/doc/sese/021/002/04"
-	sese_021_002_05_0 "github.com/teghnet/iso20022/doc/sese/021/002/05_0"
+	sese_021_002_05 "github.com/teghnet/iso20022/doc/sese/021/002/05"
 	sese_021_002_06 "github.com/teghnet/iso20022/doc/sese/021/002/06"
 	sese_022_001_01 "github.com/teghnet/iso20022/doc/sese/022/001/01"
 	sese_022_001_02 "github.com/teghnet/iso20022/doc/sese/022/001/02"
@@ -2696,7 +2696,7 @@ import (
 	sese_022_001_07 "github.com/teghnet/iso20022/doc/sese/022/001/07"
 	sese_022_001_08 "github.com/teghnet/iso20022/doc/sese/022/001/08"
 	sese_022_002_04 "github.com/teghnet/iso20022/doc/sese/022/002/04"
-	sese_022_002_05_0 "github.com/teghnet/iso20022/doc/sese/022/002/05_0"
+	sese_022_002_05 "github.com/teghnet/iso20022/doc/sese/022/002/05"
 	sese_022_002_06 "github.com/teghnet/iso20022/doc/sese/022/002/06"
 	sese_023_001_01 "github.com/teghnet/iso20022/doc/sese/023/001/01"
 	sese_023_001_02 "github.com/teghnet/iso20022/doc/sese/023/001/02"
@@ -2712,7 +2712,7 @@ import (
 	sese_023_001_12 "github.com/teghnet/iso20022/doc/sese/023/001/12"
 	sese_023_001_13 "github.com/teghnet/iso20022/doc/sese/023/001/13"
 	sese_023_002_08 "github.com/teghnet/iso20022/doc/sese/023/002/08"
-	sese_023_002_09_0 "github.com/teghnet/iso20022/doc/sese/023/002/09_0"
+	sese_023_002_09 "github.com/teghnet/iso20022/doc/sese/023/002/09"
 	sese_023_002_10 "github.com/teghnet/iso20022/doc/sese/023/002/10"
 	sese_023_002_11 "github.com/teghnet/iso20022/doc/sese/023/002/11"
 	sese_024_001_01 "github.com/teghnet/iso20022/doc/sese/024/001/01"
@@ -2747,7 +2747,7 @@ import (
 	sese_025_001_12 "github.com/teghnet/iso20022/doc/sese/025/001/12"
 	sese_025_001_13 "github.com/teghnet/iso20022/doc/sese/025/001/13"
 	sese_025_002_08 "github.com/teghnet/iso20022/doc/sese/025/002/08"
-	sese_025_002_09_0 "github.com/teghnet/iso20022/doc/sese/025/002/09_0"
+	sese_025_002_09 "github.com/teghnet/iso20022/doc/sese/025/002/09"
 	sese_025_002_10 "github.com/teghnet/iso20022/doc/sese/025/002/10"
 	sese_025_002_11 "github.com/teghnet/iso20022/doc/sese/025/002/11"
 	sese_026_001_01 "github.com/teghnet/iso20022/doc/sese/026/001/01"
@@ -2816,7 +2816,7 @@ import (
 	sese_030_001_09 "github.com/teghnet/iso20022/doc/sese/030/001/09"
 	sese_030_001_10 "github.com/teghnet/iso20022/doc/sese/030/001/10"
 	sese_030_002_07 "github.com/teghnet/iso20022/doc/sese/030/002/07"
-	sese_030_002_08_0 "github.com/teghnet/iso20022/doc/sese/030/002/08_0"
+	sese_030_002_08 "github.com/teghnet/iso20022/doc/sese/030/002/08"
 	sese_030_002_09 "github.com/teghnet/iso20022/doc/sese/030/002/09"
 	sese_031_001_01 "github.com/teghnet/iso20022/doc/sese/031/001/01"
 	sese_031_001_02 "github.com/teghnet/iso20022/doc/sese/031/001/02"
@@ -2845,7 +2845,7 @@ import (
 	sese_032_001_12 "github.com/teghnet/iso20022/doc/sese/032/001/12"
 	sese_032_001_13 "github.com/teghnet/iso20022/doc/sese/032/001/13"
 	sese_032_002_08 "github.com/teghnet/iso20022/doc/sese/032/002/08"
-	sese_032_002_09_0 "github.com/teghnet/iso20022/doc/sese/032/002/09_0"
+	sese_032_002_09 "github.com/teghnet/iso20022/doc/sese/032/002/09"
 	sese_032_002_11 "github.com/teghnet/iso20022/doc/sese/032/002/11"
 	sese_033_001_01 "github.com/teghnet/iso20022/doc/sese/033/001/01"
 	sese_033_001_02 "github.com/teghnet/iso20022/doc/sese/033/001/02"
@@ -2931,7 +2931,7 @@ import (
 	sese_038_001_10 "github.com/teghnet/iso20022/doc/sese/038/001/10"
 	sese_038_001_11 "github.com/teghnet/iso20022/doc/sese/038/001/11"
 	sese_038_002_06 "github.com/teghnet/iso20022/doc/sese/038/002/06"
-	sese_038_002_07_0 "github.com/teghnet/iso20022/doc/sese/038/002/07_0"
+	sese_038_002_07 "github.com/teghnet/iso20022/doc/sese/038/002/07"
 	sese_038_002_08 "github.com/teghnet/iso20022/doc/sese/038/002/08"
 	sese_038_002_09 "github.com/teghnet/iso20022/doc/sese/038/002/09"
 	sese_039_001_01 "github.com/teghnet/iso20022/doc/sese/039/001/01"
@@ -3753,10 +3753,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:acmt.017.001.03":
-		var isoDoc acmt_017_001_03_0.Document
+		var isoDoc acmt_017_001_03.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as acmt_017_001_03_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as acmt_017_001_03 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:acmt.017.001.04":
@@ -5020,10 +5020,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:auth.044.001.03":
-		var isoDoc auth_044_001_03_1.Document
+		var isoDoc auth_044_001_03.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as auth_044_001_03_1 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as auth_044_001_03 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:auth.045.001.01":
@@ -10683,10 +10683,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:camt.056.001.09":
-		var isoDoc camt_056_001_09_0.Document
+		var isoDoc camt_056_001_09.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as camt_056_001_09_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as camt_056_001_09 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:camt.056.001.10":
@@ -14890,10 +14890,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:pain.001.001.10":
-		var isoDoc pain_001_001_10_1.Document
+		var isoDoc pain_001_001_10.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as pain_001_001_10_1 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as pain_001_001_10 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:pain.001.001.11":
@@ -18278,10 +18278,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:seev.037.001.13":
-		var isoDoc seev_037_001_13_0.Document
+		var isoDoc seev_037_001_13.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as seev_037_001_13_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as seev_037_001_13 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:seev.037.001.14":
@@ -18453,10 +18453,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:seev.038.002.05":
-		var isoDoc seev_038_002_05_0.Document
+		var isoDoc seev_038_002_05.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as seev_038_002_05_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as seev_038_002_05 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:seev.038.002.06":
@@ -19629,10 +19629,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:semt.003.002.10":
-		var isoDoc semt_003_002_10_0.Document
+		var isoDoc semt_003_002_10.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as semt_003_002_10_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as semt_003_002_10 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:semt.003.002.11":
@@ -19818,10 +19818,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:semt.014.002.06":
-		var isoDoc semt_014_002_06_0.Document
+		var isoDoc semt_014_002_06.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as semt_014_002_06_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as semt_014_002_06 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:semt.014.002.07":
@@ -20350,10 +20350,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:semt.019.002.08":
-		var isoDoc semt_019_002_08_0.Document
+		var isoDoc semt_019_002_08.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as semt_019_002_08_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as semt_019_002_08 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:semt.019.002.09":
@@ -20581,10 +20581,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:semt.022.002.04":
-		var isoDoc semt_022_002_04_0.Document
+		var isoDoc semt_022_002_04.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as semt_022_002_04_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as semt_022_002_04 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:semt.022.002.05":
@@ -21771,10 +21771,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.020.002.06":
-		var isoDoc sese_020_002_06_0.Document
+		var isoDoc sese_020_002_06.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as sese_020_002_06_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as sese_020_002_06 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.020.002.07":
@@ -21848,10 +21848,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.021.002.05":
-		var isoDoc sese_021_002_05_0.Document
+		var isoDoc sese_021_002_05.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as sese_021_002_05_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as sese_021_002_05 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.021.002.06":
@@ -21925,10 +21925,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.022.002.05":
-		var isoDoc sese_022_002_05_0.Document
+		var isoDoc sese_022_002_05.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as sese_022_002_05_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as sese_022_002_05 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.022.002.06":
@@ -22037,10 +22037,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.023.002.09":
-		var isoDoc sese_023_002_09_0.Document
+		var isoDoc sese_023_002_09.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as sese_023_002_09_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as sese_023_002_09 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.023.002.10":
@@ -22282,10 +22282,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.025.002.09":
-		var isoDoc sese_025_002_09_0.Document
+		var isoDoc sese_025_002_09.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as sese_025_002_09_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as sese_025_002_09 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.025.002.10":
@@ -22765,10 +22765,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.030.002.08":
-		var isoDoc sese_030_002_08_0.Document
+		var isoDoc sese_030_002_08.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as sese_030_002_08_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as sese_030_002_08 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.030.002.09":
@@ -22968,10 +22968,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.032.002.09":
-		var isoDoc sese_032_002_09_0.Document
+		var isoDoc sese_032_002_09.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as sese_032_002_09_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as sese_032_002_09 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.032.002.11":
@@ -23570,10 +23570,10 @@ func load(space string, data []byte) (interface{}, error) {
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.038.002.07":
-		var isoDoc sese_038_002_07_0.Document
+		var isoDoc sese_038_002_07.Document
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as sese_038_002_07_0 document")
+			globalErr = fmt.Errorf("failed to unmarshal document as sese_038_002_07 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:sese.038.002.08":

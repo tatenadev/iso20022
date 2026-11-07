@@ -70,7 +70,7 @@ iso20022tpl template generic --validate csv -o statement.csv statement.xml firef
 
 ### `crawl <dir>`
 
-Download every message definition archive (current catalogue and archive) from [iso20022.org](https://www.iso20022.org/iso-20022-message-definitions) and extract all `.xsd` files into `<dir>`. Nested zip files are unpacked too. HTTP responses are cached in `./cache`.
+Download every message definition archive (current catalogue and archive) from [iso20022.org](https://www.iso20022.org/iso-20022-message-definitions) and extract all `.xsd` files into `<dir>`. Nested zip files are unpacked too. HTTP responses are cached in `./.cache`.
 
 ```sh
 iso20022tpl crawl xsd

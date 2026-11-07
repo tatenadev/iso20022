@@ -42,7 +42,7 @@ func Crawl(args []string) error {
 	c := colly.NewCollector(
 		colly.AllowedDomains("www.iso20022.org"),
 		colly.UserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"),
-		colly.CacheDir("cache"),
+		colly.CacheDir(".cache"),
 	)
 
 	// Add headers on all requests

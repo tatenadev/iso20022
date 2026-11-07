@@ -27,7 +27,7 @@ import (
 	"text/template"
 	"unicode/utf8"
 
-	"sigs.k8s.io/yaml"
+	"go.yaml.in/yaml/v4"
 
 	"github.com/tatenadev/iso20022"
 )
@@ -87,7 +87,7 @@ func validate(data []byte, as, csvSeparator string) error {
 	case "json":
 		return json.Unmarshal(data, &doc)
 	case "yaml":
-		return yaml.Unmarshal(data, &doc)
+		return yaml.Load(data, &doc)
 	case "csv":
 		return validateCSV(data, csvSeparator)
 	default:

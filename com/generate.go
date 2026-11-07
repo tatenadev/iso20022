@@ -15,9 +15,8 @@ import (
 
 	"aqwari.net/xml/xsd"
 	"aqwari.net/xml/xsdgen"
-	"charm.land/log/v2"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/tatenadev/x"
 )
 
 func newGenerateCmd(c *Cli) *cobra.Command {
@@ -44,17 +43,6 @@ type schema struct {
 	Folder   string
 }
 
-func Generate(args []string) error {
-	var i, o string
-	if err := x.FlagsParse(args,
-		x.Flag(&i, "i", "input dir holding all XSD files"),
-		x.Flag(&o, "o", "Go package output dir"),
-	); err != nil {
-		return err
-	}
-	return generate(i, o)
-}
-
 func generate(i, o string) error {
 	if i == "" || o == "" {
 		return fmt.Errorf("missing required flags: -i and -o")
@@ -69,10 +57,10 @@ func generate(i, o string) error {
 		// head.* schemas define the business application header (root
 		// element AppHdr, not Document), so they can't be loaded as documents.
 		if strings.HasPrefix(filepath.Base(f), "head.") {
-			log.Infof("skipping: %v", f)
+			fmt.Fprintf(progress, "skipping: %v\n", f)
 			continue
 		}
-		log.Infof("finished: %v", f)
+		fmt.Fprintf(progress, "finished: %v\n", f)
 		pkg, folder, err := generateFile(o, f)
 		if err != nil {
 			log.Errorf("failed to generate go package for '%s': %s", f, err)
@@ -92,7 +80,7 @@ func generate(i, o string) error {
 			TargetNS: targetNS,
 			Folder:   folder,
 		})
-		log.Infof(" - added: %s", targetNS)
+		fmt.Fprintf(progress, " - added: %s\n", targetNS)
 	}
 	return renderISO20022Package(o, schemas)
 }

@@ -21,7 +21,6 @@ import (
 	"os"
 	"strings"
 
-	charmlog "charm.land/log/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -78,13 +77,11 @@ func (c *Cli) wrap(f func(*Cli, *cobra.Command, []string) error) func(*cobra.Com
 func (c *Cli) setupLogger() {
 	if c.viper.GetBool("json-log") {
 		log.SetFormatter(&log.JSONFormatter{})
-		charmlog.SetFormatter(charmlog.JSONFormatter)
 	}
 
 	// --quiet hides progress messages but keeps errors and command results.
 	if c.viper.GetBool("quiet") {
 		progress = io.Discard
-		charmlog.SetLevel(charmlog.ErrorLevel)
 	} else {
 		progress = os.Stdout
 	}

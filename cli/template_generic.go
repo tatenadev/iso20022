@@ -28,7 +28,7 @@ import (
 	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 
-	"github.com/teghnet/iso20022"
+	"github.com/tatenadev/iso20022"
 )
 
 func newTemplateGenericCmd(c *Cli) *cobra.Command {

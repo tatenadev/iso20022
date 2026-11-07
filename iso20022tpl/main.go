@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/teghnet/iso20022/cli"
+	"github.com/tatenadev/iso20022/cli"
 )
 
 func main() {

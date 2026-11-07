@@ -20,7 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/teghnet/iso20022"
+	"github.com/tatenadev/iso20022"
 
 	"github.com/spf13/cobra"
 )

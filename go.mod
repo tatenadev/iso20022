@@ -1,4 +1,4 @@
-module github.com/teghnet/iso20022
+module github.com/tatenadev/iso20022
 
 go 1.27.3
 

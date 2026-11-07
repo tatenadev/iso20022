@@ -182,7 +182,7 @@ import (
 	"os"
 
 {{- range .Schemas }}
-	{{ .Pkg }} "github.com/teghnet/iso20022/{{ .Folder }}"
+	{{ .Pkg }} "github.com/tatenadev/iso20022/{{ .Folder }}"
 {{- end }}
 )
 

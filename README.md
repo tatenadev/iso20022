@@ -36,6 +36,8 @@ iso20022tpl [global flags] <command> [args]
 | `--log-functions` | `false` | Include the source file and line in log messages |
 | `-q`, `--quiet` | `false` | Hide progress messages from `crawl` and `generate`; errors and command results are still printed |
 
+Global flags can be given before or after the command. Flags and arguments can be mixed; everything after `--` is an argument. `-o x` and `--output=x` are equivalent, but short flags can't be grouped (`-qo` doesn't work). Run `iso20022tpl help <command>` or `<command> -h` for a command's flags.
+
 Every flag can also be set by an environment variable: prefix `ISO20022TPL_`, upper case, with `-` replaced by `_`. For example, `ISO20022TPL_LOG_LEVEL=debug`.
 
 ### `json <file>`
@@ -89,14 +91,6 @@ iso20022tpl generate -i xsd -o .
 ### `version`
 
 Print the version of `iso20022tpl`.
-
-### `completion <shell>`
-
-Generate a shell completion script for `bash`, `zsh`, `fish` or `powershell`.
-
-```sh
-source <(iso20022tpl completion bash)
-```
 
 ## Filtering documents
 

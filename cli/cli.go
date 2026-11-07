@@ -17,85 +17,208 @@ limitations under the License.
 package cli
 
 import (
+	"errors"
+	"flag"
 	"fmt"
 	"io"
 	"log/slog"
 	"os"
 	"strings"
-
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
+	"text/tabwriter"
 )
 
-// Cli is the core command line interface
-// Wrapping the cli in its own public type might allow
-// it to be integrated in other programs, creating
-// something like a composite application
+// Cli is the core command line interface.
 type Cli struct {
-	RootCommand *cobra.Command
-	viper       *viper.Viper
+	stdout    io.Writer
+	stderr    io.Writer
+	lookupEnv func(string) (string, bool)
+
+	logLevel     string
+	jsonLog      bool
+	logFunctions bool
+	quiet        bool
 }
 
-// NewCli creates a
+// NewCli creates a Cli that writes to os.Stdout and os.Stderr and reads
+// ISO20022TPL_* environment variables.
 func NewCli() *Cli {
-	v := viper.GetViper()
-	v.SetEnvPrefix(appName)
-	dashReplacer := strings.NewReplacer("-", "_", ".", "_")
-	v.SetEnvKeyReplacer(dashReplacer)
-	v.AutomaticEnv()
-	cli := &Cli{
-		viper: v,
+	return &Cli{
+		stdout:    os.Stdout,
+		stderr:    os.Stderr,
+		lookupEnv: os.LookupEnv,
+		logLevel:  "warn",
 	}
-	cli.RootCommand = NewRootCommand(cli)
-	return cli
 }
 
-func (c *Cli) bindAllFlags(cmd *cobra.Command) {
-	cmd.PersistentFlags().VisitAll(func(f *pflag.Flag) {
-		if err := c.viper.BindPFlag(f.Name, cmd.PersistentFlags().Lookup(f.Name)); err != nil {
-			panic(err) // Should never happen
-		}
-	})
-	cmd.Flags().VisitAll(func(f *pflag.Flag) {
-		if err := c.viper.BindPFlag(f.Name, cmd.Flags().Lookup(f.Name)); err != nil {
-			panic(err) // Should never happen
-		}
-	})
+// command is a node in the command tree. A command either has
+// subcommands or a run function.
+type command struct {
+	name  string
+	args  string // positional arguments shown in the usage line
+	short string
+	nargs int // exact number of positional arguments
+	flags func(fs *flagSet)
+	run   func(c *Cli, args []string) error
+	sub   []*command
 }
 
-// wrapper func to bind all flags with viper on command execution
-// and to perform global post-command execution steps (if necessary)
-func (c *Cli) wrap(f func(*Cli, *cobra.Command, []string) error) func(*cobra.Command, []string) error {
-	return func(cmd *cobra.Command, args []string) error {
-		cmd.SilenceUsage = true
-		if err := c.setupLogger(); err != nil {
-			return err
-		}
-		c.bindAllFlags(cmd)
-		return f(c, cmd, args)
+func rootCommand() *command {
+	return &command{
+		name:  appName,
+		short: "Convert ISO 20022 bank statements to CSV",
+		sub: []*command{
+			newVersionCmd(),
+			newJsonCmd(),
+			newYamlCmd(),
+			newTemplateCmd(),
+			newCrawlCmd(),
+			newGenerateCmd(),
+		},
 	}
+}
+
+// Run parses args (without the program name) and executes the selected
+// command.
+func (c *Cli) Run(args []string) error {
+	err := c.run(rootCommand(), []string{appName}, args, map[string]bool{})
+	if errors.Is(err, flag.ErrHelp) {
+		return nil
+	}
+	return err
+}
+
+func (c *Cli) run(cmd *command, path, args []string, set map[string]bool) error {
+	fs := c.flagSet(cmd, path)
+
+	if len(cmd.sub) > 0 {
+		if err := fs.Parse(args); err != nil {
+			return c.flagError(err, cmd, path, fs)
+		}
+		fs.markSet(set)
+		rest := fs.Args()
+		if len(rest) == 0 {
+			c.usage(c.stdout, cmd, path, fs)
+			return nil
+		}
+		if rest[0] == "help" {
+			return c.help(cmd, path, rest[1:])
+		}
+		if sub := cmd.find(rest[0]); sub != nil {
+			return c.run(sub, append(path, sub.name), rest[1:], set)
+		}
+		c.usage(c.stderr, cmd, path, fs)
+		return fmt.Errorf("unknown command %q for %q", rest[0], strings.Join(path, " "))
+	}
+
+	rest, err := parseInterspersed(fs.FlagSet, args)
+	if err != nil {
+		return c.flagError(err, cmd, path, fs)
+	}
+	fs.markSet(set)
+	if err := fs.applyEnv(set, c.lookupEnv); err != nil {
+		return err
+	}
+	if len(rest) != cmd.nargs {
+		return fmt.Errorf("%q accepts %d arg(s), received %d\nusage: %s",
+			strings.Join(path, " "), cmd.nargs, len(rest), usageLine(cmd, path))
+	}
+	if err := c.setupLogger(); err != nil {
+		return err
+	}
+	return cmd.run(c, rest)
+}
+
+// help prints the usage of the command found by following names from cmd.
+func (c *Cli) help(cmd *command, path, names []string) error {
+	for _, name := range names {
+		sub := cmd.find(name)
+		if sub == nil {
+			return fmt.Errorf("unknown command %q for %q", name, strings.Join(path, " "))
+		}
+		cmd, path = sub, append(path, sub.name)
+	}
+	c.usage(c.stdout, cmd, path, c.flagSet(cmd, path))
+	return nil
+}
+
+func (c *Cli) flagError(err error, cmd *command, path []string, fs *flagSet) error {
+	if errors.Is(err, flag.ErrHelp) {
+		c.usage(c.stdout, cmd, path, fs)
+		return err
+	}
+	c.usage(c.stderr, cmd, path, fs)
+	return err
+}
+
+func (cmd *command) find(name string) *command {
+	for _, s := range cmd.sub {
+		if s.name == name {
+			return s
+		}
+	}
+	return nil
+}
+
+// flagSet returns the flags accepted by cmd: the global flags plus its own.
+// Global flags are registered with their current values as defaults, so
+// values parsed at an earlier level are kept.
+func (c *Cli) flagSet(cmd *command, path []string) *flagSet {
+	fs := newFlagSet(strings.Join(path, " "))
+	fs.string(&c.logLevel, "log-level", "", c.logLevel, "log level (debug,info,warn,error)")
+	fs.bool(&c.jsonLog, "json-log", "", c.jsonLog, "log as json")
+	fs.bool(&c.logFunctions, "log-functions", "", c.logFunctions, "include the source file and line in log messages")
+	fs.bool(&c.quiet, "quiet", "q", c.quiet, "suppress progress messages")
+	if cmd.flags != nil {
+		cmd.flags(fs)
+	}
+	return fs
+}
+
+func usageLine(cmd *command, path []string) string {
+	line := strings.Join(path, " ")
+	if len(cmd.sub) > 0 {
+		return line + " [flags] <command>"
+	}
+	if cmd.args != "" {
+		line += " " + cmd.args
+	}
+	return line + " [flags]"
+}
+
+func (c *Cli) usage(w io.Writer, cmd *command, path []string, fs *flagSet) {
+	fmt.Fprintf(w, "%s\n\nUsage:\n  %s\n", cmd.short, usageLine(cmd, path))
+	tw := tabwriter.NewWriter(w, 0, 0, 3, ' ', 0)
+	if len(cmd.sub) > 0 {
+		fmt.Fprintln(tw, "\nCommands:")
+		for _, s := range cmd.sub {
+			fmt.Fprintf(tw, "  %s\t%s\n", s.name, s.short)
+		}
+		fmt.Fprintf(tw, "  help\tHelp about any command\n")
+	}
+	fmt.Fprintln(tw, "\nFlags:")
+	fs.printDefaults(tw)
+	_ = tw.Flush()
 }
 
 func (c *Cli) setupLogger() error {
 	// --quiet hides progress messages but keeps errors and command results.
-	if c.viper.GetBool("quiet") {
+	if c.quiet {
 		progress = io.Discard
 	} else {
-		progress = os.Stdout
+		progress = c.stdout
 	}
 
-	level, err := parseLevel(c.viper.GetString("log-level"))
+	level, err := parseLevel(c.logLevel)
 	if err != nil {
 		return err
 	}
 	opts := &slog.HandlerOptions{
 		Level:     level,
-		AddSource: c.viper.GetBool("log-functions"),
+		AddSource: c.logFunctions,
 	}
-	var h slog.Handler = slog.NewTextHandler(os.Stderr, opts)
-	if c.viper.GetBool("json-log") {
-		h = slog.NewJSONHandler(os.Stderr, opts)
+	var h slog.Handler = slog.NewTextHandler(c.stderr, opts)
+	if c.jsonLog {
+		h = slog.NewJSONHandler(c.stderr, opts)
 	}
 	slog.SetDefault(slog.New(h))
 	return nil
@@ -118,31 +241,4 @@ func parseLevel(s string) (slog.Level, error) {
 		return 0, fmt.Errorf("invalid log level %q: use debug, info, warn or error", s)
 	}
 	return l, nil
-}
-
-func NewRootCommand(c *Cli) *cobra.Command {
-	rootCmd := &cobra.Command{
-		Use:           "iso20022tpl",
-		Short:         "Convert ISO 20022 bank statements to CSV",
-		SilenceUsage:  false,
-		SilenceErrors: true,
-	}
-
-	rootCmd.PersistentFlags().String("log-level", "warn", "log level (debug,info,warn,error)")
-	rootCmd.PersistentFlags().Bool("json-log", false, "log as json")
-	rootCmd.PersistentFlags().Bool("log-functions", false, "include the source file and line in log messages")
-	rootCmd.PersistentFlags().BoolP("quiet", "q", false, "Suppress all normal output")
-
-	c.bindAllFlags(rootCmd)
-
-	rootCmd.AddCommand(
-		newVersionCmd(),
-		newJsonCmd(c),
-		newYamlCmd(c),
-		newTemplateCmd(c),
-		newCrawlCmd(c),
-		newGenerateCmd(c),
-	)
-
-	return rootCmd
 }

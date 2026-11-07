@@ -16,21 +16,20 @@ import (
 
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/gocolly/colly/v2"
-	"github.com/spf13/cobra"
 )
 
 // progress receives informational messages; --quiet sets it to io.Discard.
 var progress io.Writer = os.Stdout
 
-func newCrawlCmd(c *Cli) *cobra.Command {
-	return &cobra.Command{
-		Use:                   "crawl [dir]",
-		Short:                 "Download ISO 20022 XSD files from iso20022.org into dir",
-		Args:                  cobra.ExactArgs(1),
-		DisableFlagsInUseLine: true,
-		RunE: c.wrap(func(_ *Cli, _ *cobra.Command, args []string) error {
+func newCrawlCmd() *command {
+	return &command{
+		name:  "crawl",
+		args:  "<dir>",
+		short: "Download ISO 20022 XSD files from iso20022.org into dir",
+		nargs: 1,
+		run: func(_ *Cli, args []string) error {
 			return Crawl(args)
-		}),
+		},
 	}
 }
 

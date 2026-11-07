@@ -21,24 +21,19 @@ import (
 	"fmt"
 
 	"github.com/tatenadev/iso20022"
-
-	"github.com/spf13/cobra"
 )
 
-func newJsonCmd(c *Cli) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:                   "json [file]",
-		Short:                 "Convert ISO 20022 file to json",
-		Args:                  cobra.ExactArgs(1),
-		TraverseChildren:      true,
-		DisableFlagsInUseLine: true,
-		RunE:                  c.wrap(runJson),
+func newJsonCmd() *command {
+	return &command{
+		name:  "json",
+		args:  "<file>",
+		short: "Convert ISO 20022 file to json",
+		nargs: 1,
+		run:   runJson,
 	}
-
-	return cmd
 }
 
-func runJson(c *Cli, cmd *cobra.Command, args []string) error {
+func runJson(c *Cli, args []string) error {
 	file := args[0]
 
 	doc, err := iso20022.New(file)
@@ -46,9 +41,10 @@ func runJson(c *Cli, cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to load iso20022 document from '%s': %s", file, err)
 	}
 
-	// JSON format:
-	js, _ := json.MarshalIndent(doc, "", "  ")
-	fmt.Printf("%+v", string(js))
-
-	return nil
+	js, err := json.MarshalIndent(doc, "", "  ")
+	if err != nil {
+		return err
+	}
+	_, err = c.stdout.Write(js)
+	return err
 }

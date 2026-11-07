@@ -16,25 +16,22 @@ import (
 
 	"aqwari.net/xml/xsd"
 	"aqwari.net/xml/xsdgen"
-	"github.com/spf13/cobra"
 )
 
-func newGenerateCmd(c *Cli) *cobra.Command {
+func newGenerateCmd() *command {
 	var in, out string
-	cmd := &cobra.Command{
-		Use:                   "generate -i <xsd dir> -o <output dir>",
-		Short:                 "Generate Go document packages from ISO 20022 XSD files",
-		Args:                  cobra.NoArgs,
-		DisableFlagsInUseLine: true,
-		RunE: c.wrap(func(_ *Cli, _ *cobra.Command, _ []string) error {
+	return &command{
+		name:  "generate",
+		args:  "-i <xsd dir> -o <output dir>",
+		short: "Generate Go document packages from ISO 20022 XSD files",
+		flags: func(fs *flagSet) {
+			fs.string(&in, "input", "i", "", "input dir holding all XSD files")
+			fs.string(&out, "output", "o", "", "Go package output dir")
+		},
+		run: func(_ *Cli, _ []string) error {
 			return generate(in, out)
-		}),
+		},
 	}
-	cmd.Flags().StringVarP(&in, "input", "i", "", "input dir holding all XSD files")
-	cmd.Flags().StringVarP(&out, "output", "o", "", "Go package output dir")
-	_ = cmd.MarkFlagRequired("input")
-	_ = cmd.MarkFlagRequired("output")
-	return cmd
 }
 
 type schema struct {

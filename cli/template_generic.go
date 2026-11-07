@@ -20,38 +20,43 @@ import (
 	"bytes"
 	"encoding/csv"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"os"
 	"text/template"
+	"unicode/utf8"
 
-	"github.com/spf13/cobra"
 	"sigs.k8s.io/yaml"
 
 	"github.com/tatenadev/iso20022"
 )
 
-func newTemplateGenericCmd(c *Cli) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:                   "generic [iso20022 file] [template]",
-		Short:                 "Render a generic template based on a ISO 20022 file",
-		Args:                  cobra.ExactArgs(2),
-		TraverseChildren:      true,
-		DisableFlagsInUseLine: true,
-		RunE:                  c.wrap(runTemplateGeneric),
-	}
-
-	cmd.Flags().StringP("output", "o", "", "Write output to file")
-	cmd.Flags().String("validate", "", "Validate the result as (json,yaml,csv)")
-	cmd.Flags().String("csv-separator", ",", "CSV separator used when validating csv")
-
-	return cmd
+type templateOpts struct {
+	output       string
+	validate     string
+	csvSeparator string
 }
 
-func runTemplateGeneric(c *Cli, cmd *cobra.Command, args []string) error {
-	isoFile := args[0]
-	templateFile := args[1]
+func newTemplateGenericCmd() *command {
+	var o templateOpts
+	return &command{
+		name:  "generic",
+		args:  "<iso20022 file> <template>",
+		short: "Render a generic template based on a ISO 20022 file",
+		nargs: 2,
+		flags: func(fs *flagSet) {
+			fs.string(&o.output, "output", "o", "", "Write output to file")
+			fs.string(&o.validate, "validate", "", "", "Validate the result as (json,yaml,csv)")
+			fs.string(&o.csvSeparator, "csv-separator", "", ",", "CSV separator used when validating csv")
+		},
+		run: func(c *Cli, args []string) error {
+			return runTemplateGeneric(c.stdout, args[0], args[1], o)
+		},
+	}
+}
 
+func runTemplateGeneric(w io.Writer, isoFile, templateFile string, o templateOpts) error {
 	doc, err := iso20022.New(isoFile)
 	if err != nil {
 		return fmt.Errorf("failed to load iso20022 document from '%s': %s", isoFile, err)
@@ -67,42 +72,39 @@ func runTemplateGeneric(c *Cli, cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to render template: %s", err)
 	}
 
-	if err := validate(c, buf.Bytes()); err != nil {
-		return fmt.Errorf("failed to validate result as '%s': %s", c.viper.GetString("validate"), err)
+	if err := validate(buf.Bytes(), o.validate, o.csvSeparator); err != nil {
+		return fmt.Errorf("failed to validate result as '%s': %s", o.validate, err)
 	}
 
-	return output(buf.Bytes(), c.viper.GetString("output"))
+	return output(w, buf.Bytes(), o.output)
 }
 
-func validate(c *Cli, data []byte) error {
-	as := c.viper.GetString("validate")
-	if as == "" {
-		return nil
-	}
-
+func validate(data []byte, as, csvSeparator string) error {
 	var doc interface{}
-	var err error
 	switch as {
+	case "":
+		return nil
 	case "json":
-		err = json.Unmarshal(data, &doc)
+		return json.Unmarshal(data, &doc)
 	case "yaml":
-		err = yaml.Unmarshal(data, &doc)
+		return yaml.Unmarshal(data, &doc)
 	case "csv":
-		err = validateCSV(c, data)
+		return validateCSV(data, csvSeparator)
 	default:
 		return fmt.Errorf("unknown validation format: %s", as)
 	}
-
-	return err
 }
 
-func validateCSV(c *Cli, data []byte) error {
-	sep := c.viper.GetString("csv-separator")
+func validateCSV(data []byte, sep string) error {
+	comma, size := utf8.DecodeRuneInString(sep)
+	if size == 0 || size != len(sep) {
+		return fmt.Errorf("csv separator must be a single character, got %q", sep)
+	}
 	csvReader := csv.NewReader(bytes.NewReader(data))
-	csvReader.Comma = []rune(sep)[0]
+	csvReader.Comma = comma
 
 	for {
-		if _, err := csvReader.Read(); err == io.EOF {
+		if _, err := csvReader.Read(); errors.Is(err, io.EOF) {
 			return nil
 		} else if err != nil {
 			return err
@@ -110,14 +112,14 @@ func validateCSV(c *Cli, data []byte) error {
 	}
 }
 
-func output(data []byte, dest string) error {
+func output(w io.Writer, data []byte, dest string) error {
 	if dest != "" {
-		if err := ioutil.WriteFile(dest, data, 0o644); err != nil {
+		if err := os.WriteFile(dest, data, 0o644); err != nil {
 			return fmt.Errorf("failed to write output to '%s': %s", dest, err)
 		}
 		return nil
 	}
 
-	fmt.Printf("%s", string(data))
-	return nil
+	_, err := w.Write(data)
+	return err
 }

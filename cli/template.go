@@ -16,22 +16,12 @@ limitations under the License.
 
 package cli
 
-import (
-	"github.com/spf13/cobra"
-)
-
-func newTemplateCmd(c *Cli) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:                   "template",
-		Short:                 "Render a template based on a ISO 20022 file",
-		Args:                  cobra.NoArgs,
-		TraverseChildren:      true,
-		DisableFlagsInUseLine: true,
+func newTemplateCmd() *command {
+	return &command{
+		name:  "template",
+		short: "Render a template based on a ISO 20022 file",
+		sub: []*command{
+			newTemplateGenericCmd(),
+		},
 	}
-
-	cmd.AddCommand(
-		newTemplateGenericCmd(c),
-	)
-
-	return cmd
 }

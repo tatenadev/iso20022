@@ -21,25 +21,20 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	"github.com/spf13/cobra"
-
 	"github.com/tatenadev/iso20022"
 )
 
-func newYamlCmd(c *Cli) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:                   "yaml [file]",
-		Short:                 "Convert ISO 20022 file to yaml",
-		Args:                  cobra.ExactArgs(1),
-		TraverseChildren:      true,
-		DisableFlagsInUseLine: true,
-		RunE:                  c.wrap(runYaml),
+func newYamlCmd() *command {
+	return &command{
+		name:  "yaml",
+		args:  "<file>",
+		short: "Convert ISO 20022 file to yaml",
+		nargs: 1,
+		run:   runYaml,
 	}
-
-	return cmd
 }
 
-func runYaml(c *Cli, cmd *cobra.Command, args []string) error {
+func runYaml(c *Cli, args []string) error {
 	file := args[0]
 
 	doc, err := iso20022.New(file)
@@ -47,9 +42,10 @@ func runYaml(c *Cli, cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to load iso20022 document from '%s': %s", file, err)
 	}
 
-	// JSON format:
-	y, _ := yaml.Marshal(doc)
-	fmt.Printf("%+v", string(y))
-
-	return nil
+	y, err := yaml.Marshal(doc)
+	if err != nil {
+		return err
+	}
+	_, err = c.stdout.Write(y)
+	return err
 }

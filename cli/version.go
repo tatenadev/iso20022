@@ -16,11 +16,7 @@ limitations under the License.
 
 package cli
 
-import (
-	"fmt"
-
-	"github.com/spf13/cobra"
-)
+import "fmt"
 
 const appName = "iso20022tpl"
 
@@ -28,13 +24,13 @@ const appName = "iso20022tpl"
 // See https://www.digitalocean.com/community/tutorials/using-ldflags-to-set-version-information-for-go-applications
 var Version = "development"
 
-func newVersionCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "version",
-		Short: fmt.Sprint("Print the version number of ", appName),
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("%s %s\n", appName, Version)
+func newVersionCmd() *command {
+	return &command{
+		name:  "version",
+		short: fmt.Sprint("Print the version number of ", appName),
+		run: func(c *Cli, _ []string) error {
+			_, err := fmt.Fprintf(c.stdout, "%s %s\n", appName, Version)
+			return err
 		},
 	}
-	return cmd
 }

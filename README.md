@@ -80,7 +80,7 @@ iso20022tpl crawl xsd
 
 Generate a Go package for each `*.xsd` file in `<xsd dir>`, plus `<output dir>/iso20022.gen.go`, which maps each schema namespace to its package so `json`, `yaml` and `template` can load any supported document. `head.*` schemas (business application headers) are skipped.
 
-Packages are written to `<output dir>/document/<area>/<message>/<variant>/<version>/`. `iso20022.gen.go` imports them as `github.com/tatenadev/iso20022/<output dir>/document/...`, so run the command from the repository root with a relative `-o` path.
+Packages are written to `<output dir>/doc/<area>/<message>/<variant>/<version>/`. `iso20022.gen.go` imports them as `github.com/tatenadev/iso20022/<output dir>/doc/...`, so run the command from the repository root with a relative `-o` path.
 
 ```sh
 iso20022tpl generate -i xsd -o .

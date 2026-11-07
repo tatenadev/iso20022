@@ -95,7 +95,7 @@ func generateFile(dir, f string) (string, string, error) {
 	variant := parts[2]
 	version := parts[3]
 
-	folder := path.Join(dir, "document", businessArea, messageID, variant, version)
+	folder := path.Join(dir, "doc", businessArea, messageID, variant, version)
 	if err := os.MkdirAll(folder, 0o777); err != nil {
 		return "", "", fmt.Errorf("failed to create directory '%s': %s", folder, err)
 	}

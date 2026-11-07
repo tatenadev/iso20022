@@ -41,6 +41,12 @@ func Generate(args []string) error {
 	var schemas []schema
 	set := make(map[string]bool)
 	for _, f := range files {
+		// head.* schemas define the business application header (root
+		// element AppHdr, not Document), so they can't be loaded as documents.
+		if strings.HasPrefix(filepath.Base(f), "head.") {
+			log.Printf("skipping: %v", f)
+			continue
+		}
 		log.Printf("finished: %v", f)
 		pkg, folder, err := generateFile(o, f)
 		if err != nil {

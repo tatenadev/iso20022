@@ -41,6 +41,8 @@ func NewRootCommand(c *Cli) *cobra.Command {
 		newJsonCmd(c),
 		newYamlCmd(c),
 		newTemplateCmd(c),
+		newCrawlCmd(c),
+		newGenerateCmd(c),
 	)
 
 	return rootCmd

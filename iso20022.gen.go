@@ -1593,9 +1593,6 @@ import (
 	fxtr_037_001_02 "github.com/teghnet/iso20022/doc/fxtr/037/001/02"
 	fxtr_038_001_01 "github.com/teghnet/iso20022/doc/fxtr/038/001/01"
 	fxtr_038_001_02 "github.com/teghnet/iso20022/doc/fxtr/038/001/02"
-	head_001_001_02 "github.com/teghnet/iso20022/doc/head/001/001/02"
-	head_001_001_04 "github.com/teghnet/iso20022/doc/head/001/001/04"
-	head_002_001_01 "github.com/teghnet/iso20022/doc/head/002/001/01"
 	pacs_002_001_03 "github.com/teghnet/iso20022/doc/pacs/002/001/03"
 	pacs_002_001_04 "github.com/teghnet/iso20022/doc/pacs/002/001/04"
 	pacs_002_001_05 "github.com/teghnet/iso20022/doc/pacs/002/001/05"
@@ -14204,27 +14201,6 @@ func load(space string, data []byte) (interface{}, error) {
 		err := xml.Unmarshal(data, &isoDoc)
 		if err != nil {
 			globalErr = fmt.Errorf("failed to unmarshal document as fxtr_038_001_02 document")
-		}
-		doc = isoDoc
-	case "urn:iso:std:iso:20022:tech:xsd:head.001.001.02":
-		var isoDoc head_001_001_02.Document
-		err := xml.Unmarshal(data, &isoDoc)
-		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as head_001_001_02 document")
-		}
-		doc = isoDoc
-	case "urn:iso:std:iso:20022:tech:xsd:head.001.001.04":
-		var isoDoc head_001_001_04.Document
-		err := xml.Unmarshal(data, &isoDoc)
-		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as head_001_001_04 document")
-		}
-		doc = isoDoc
-	case "urn:iso:std:iso:20022:tech:xsd:head.002.001.01":
-		var isoDoc head_002_001_01.Document
-		err := xml.Unmarshal(data, &isoDoc)
-		if err != nil {
-			globalErr = fmt.Errorf("failed to unmarshal document as head_002_001_01 document")
 		}
 		doc = isoDoc
 	case "urn:iso:std:iso:20022:tech:xsd:pacs.002.001.03":

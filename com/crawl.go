@@ -1,4 +1,4 @@
-package cmd
+package com
 
 import (
 	"archive/zip"

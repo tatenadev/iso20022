@@ -4,10 +4,10 @@ go 1.27.3
 
 require (
 	aqwari.net/xml v0.0.0-20210331023308-d9421b293817
-	github.com/gabriel-vasile/mimetype v1.4.13
+	github.com/gabriel-vasile/mimetype v1.4.16
 	github.com/gocolly/colly/v2 v2.3.0
 	github.com/spf13/cobra v1.10.2
-	github.com/spf13/pflag v1.0.10
+	github.com/spf13/pflag v1.1.0
 	github.com/spf13/viper v1.21.0
 	sigs.k8s.io/yaml v1.6.0
 )

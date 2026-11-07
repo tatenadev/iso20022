@@ -26,7 +26,7 @@ import (
 )
 
 func newJsonCmd(c *Cli) *cobra.Command {
-	var cmd = &cobra.Command{
+	cmd := &cobra.Command{
 		Use:                   "json [file]",
 		Short:                 "Convert ISO 20022 file to json",
 		Args:                  cobra.ExactArgs(1),

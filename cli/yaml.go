@@ -27,7 +27,7 @@ import (
 )
 
 func newYamlCmd(c *Cli) *cobra.Command {
-	var cmd = &cobra.Command{
+	cmd := &cobra.Command{
 		Use:                   "yaml [file]",
 		Short:                 "Convert ISO 20022 file to yaml",
 		Args:                  cobra.ExactArgs(1),

@@ -32,7 +32,7 @@ func newCrawlCmd(c *Cli) *cobra.Command {
 
 func Crawl(args []string) error {
 	dir := args[0]
-	err := os.MkdirAll(dir, 0777)
+	err := os.MkdirAll(dir, 0o777)
 	if err != nil {
 		return err
 	}
@@ -138,7 +138,7 @@ func unzipWriteFile(data []byte, dir string) error {
 		}
 
 		// store the extracted file
-		if err := ioutil.WriteFile(fmt.Sprintf("%s/%s", dir, zipFile.Name), unzippedFileBytes, 0644); err != nil {
+		if err := ioutil.WriteFile(fmt.Sprintf("%s/%s", dir, zipFile.Name), unzippedFileBytes, 0o644); err != nil {
 			return fmt.Errorf("failed to save extracted file as '%s/%s': %s", dir, zipFile.Name, err)
 		}
 	}

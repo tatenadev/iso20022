@@ -21,7 +21,7 @@ import (
 )
 
 func newTemplateCmd(c *Cli) *cobra.Command {
-	var cmd = &cobra.Command{
+	cmd := &cobra.Command{
 		Use:                   "template",
 		Short:                 "Render a template based on a ISO 20022 file",
 		Args:                  cobra.NoArgs,

@@ -32,7 +32,7 @@ import (
 )
 
 func newTemplateGenericCmd(c *Cli) *cobra.Command {
-	var cmd = &cobra.Command{
+	cmd := &cobra.Command{
 		Use:                   "generic [iso20022 file] [template]",
 		Short:                 "Render a generic template based on a ISO 20022 file",
 		Args:                  cobra.ExactArgs(2),
@@ -99,7 +99,7 @@ func validate(c *Cli, data []byte) error {
 func validateCSV(c *Cli, data []byte) error {
 	sep := c.viper.GetString("csv-separator")
 	csvReader := csv.NewReader(bytes.NewReader(data))
-	csvReader.Comma = ([]rune(sep))[0]
+	csvReader.Comma = []rune(sep)[0]
 
 	for {
 		if _, err := csvReader.Read(); err == io.EOF {
@@ -112,7 +112,7 @@ func validateCSV(c *Cli, data []byte) error {
 
 func output(data []byte, dest string) error {
 	if dest != "" {
-		if err := ioutil.WriteFile(dest, data, 0644); err != nil {
+		if err := ioutil.WriteFile(dest, data, 0o644); err != nil {
 			return fmt.Errorf("failed to write output to '%s': %s", dest, err)
 		}
 		return nil

@@ -1,4 +1,4 @@
-package com
+package cmd
 
 import (
 	"archive/zip"
@@ -11,7 +11,20 @@ import (
 
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/gocolly/colly/v2"
+	"github.com/spf13/cobra"
 )
+
+func newCrawlCmd(c *Cli) *cobra.Command {
+	return &cobra.Command{
+		Use:                   "crawl [dir]",
+		Short:                 "Download ISO 20022 XSD files from iso20022.org into dir",
+		Args:                  cobra.ExactArgs(1),
+		DisableFlagsInUseLine: true,
+		RunE: c.wrap(func(_ *Cli, _ *cobra.Command, args []string) error {
+			return Crawl(args)
+		}),
+	}
+}
 
 func Crawl(args []string) error {
 	dir := args[0]

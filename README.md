@@ -9,10 +9,16 @@ I've reorganized the repo to allow importing.
 
 ```text
 iso20022
-├── cmd - `main` package 
+├── cmd - CLI commands (`cmd/iso20022tpl` is the `main` package)
 ├── com - ready to use commands
 ├── doc - generated document structs
 └── xsd - xsd files (sourced from iso20022.org)
+```
+
+Install the CLI with:
+
+```sh
+go install github.com/teghnet/iso20022/cmd/iso20022tpl@latest
 ```
 
 ## Filtering documents

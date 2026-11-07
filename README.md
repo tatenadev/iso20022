@@ -31,9 +31,9 @@ iso20022tpl [global flags] <command> [args]
 
 | Flag | Default | Description |
 |---|---|---|
-| `--log-level` | `warning` | Log level: `trace`, `debug`, `info`, `warn`/`warning`, `error`, `fatal`, `panic` |
+| `--log-level` | `warn` | Log level: `debug`, `info`, `warn`, `error` |
 | `--json-log` | `false` | Write log messages as JSON |
-| `--log-functions` | `false` | Include function names in log output (performance impact) |
+| `--log-functions` | `false` | Include the source file and line in log messages |
 | `-q`, `--quiet` | `false` | Hide progress messages from `crawl` and `generate`; errors and command results are still printed |
 
 Every flag can also be set by an environment variable: prefix `ISO20022TPL_`, upper case, with `-` replaced by `_`. For example, `ISO20022TPL_LOG_LEVEL=debug`.

@@ -17,11 +17,12 @@ limitations under the License.
 package com
 
 import (
+	"fmt"
 	"io"
+	"log/slog"
 	"os"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -68,17 +69,15 @@ func (c *Cli) bindAllFlags(cmd *cobra.Command) {
 func (c *Cli) wrap(f func(*Cli, *cobra.Command, []string) error) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		cmd.SilenceUsage = true
-		c.setupLogger()
+		if err := c.setupLogger(); err != nil {
+			return err
+		}
 		c.bindAllFlags(cmd)
 		return f(c, cmd, args)
 	}
 }
 
-func (c *Cli) setupLogger() {
-	if c.viper.GetBool("json-log") {
-		log.SetFormatter(&log.JSONFormatter{})
-	}
-
+func (c *Cli) setupLogger() error {
 	// --quiet hides progress messages but keeps errors and command results.
 	if c.viper.GetBool("quiet") {
 		progress = io.Discard
@@ -86,17 +85,37 @@ func (c *Cli) setupLogger() {
 		progress = os.Stdout
 	}
 
-	logLevel, err := log.ParseLevel(c.viper.GetString("log-level"))
+	level, err := parseLevel(c.viper.GetString("log-level"))
 	if err != nil {
-		log.Fatal(err.Error())
+		return err
 	}
-
-	// According to the logrus documentation this is very costly, but
-	// if we need debug tracing or more, this is also very helpful
-	// See https://github.com/sirupsen/logrus/blob/d417be0fe654de640a82370515129985b407c7e3/README.md#logging-method-name
-	if c.viper.GetBool("log-functions") {
-		log.SetReportCaller(true)
+	opts := &slog.HandlerOptions{
+		Level:     level,
+		AddSource: c.viper.GetBool("log-functions"),
 	}
+	var h slog.Handler = slog.NewTextHandler(os.Stderr, opts)
+	if c.viper.GetBool("json-log") {
+		h = slog.NewJSONHandler(os.Stderr, opts)
+	}
+	slog.SetDefault(slog.New(h))
+	return nil
+}
 
-	log.SetLevel(logLevel)
+// parseLevel maps a --log-level value to a slog level. The logrus level
+// names used by earlier versions (trace, warning, fatal, panic) are still
+// accepted.
+func parseLevel(s string) (slog.Level, error) {
+	switch strings.ToLower(s) {
+	case "trace":
+		return slog.LevelDebug, nil
+	case "warning":
+		return slog.LevelWarn, nil
+	case "fatal", "panic":
+		return slog.LevelError, nil
+	}
+	var l slog.Level
+	if err := l.UnmarshalText([]byte(s)); err != nil {
+		return 0, fmt.Errorf("invalid log level %q: use debug, info, warn or error", s)
+	}
+	return l, nil
 }

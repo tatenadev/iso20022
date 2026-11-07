@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
+	"log/slog"
 	"os"
 	"path"
 	"path/filepath"
@@ -15,7 +16,6 @@ import (
 
 	"aqwari.net/xml/xsd"
 	"aqwari.net/xml/xsdgen"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -63,12 +63,12 @@ func generate(i, o string) error {
 		fmt.Fprintf(progress, "finished: %v\n", f)
 		pkg, folder, err := generateFile(o, f)
 		if err != nil {
-			log.Errorf("failed to generate go package for '%s': %s", f, err)
+			slog.Error("failed to generate go package", "file", f, "err", err)
 			continue
 		}
 		targetNS, err := getTargetNS(f)
 		if err != nil {
-			log.Errorf("failed to get target namespace for '%s': %s", f, err)
+			slog.Error("failed to get target namespace", "file", f, "err", err)
 			return err
 		}
 		if set[targetNS] {

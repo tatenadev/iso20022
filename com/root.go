@@ -17,7 +17,6 @@ limitations under the License.
 package com
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -29,9 +28,9 @@ func NewRootCommand(c *Cli) *cobra.Command {
 		SilenceErrors: true,
 	}
 
-	rootCmd.PersistentFlags().String("log-level", log.WarnLevel.String(), "log level (trace,debug,info,warn/warning,error,fatal,panic)")
+	rootCmd.PersistentFlags().String("log-level", "warn", "log level (debug,info,warn,error)")
 	rootCmd.PersistentFlags().Bool("json-log", false, "log as json")
-	rootCmd.PersistentFlags().Bool("log-functions", false, "log function names (performance impact!)")
+	rootCmd.PersistentFlags().Bool("log-functions", false, "include the source file and line in log messages")
 	rootCmd.PersistentFlags().BoolP("quiet", "q", false, "Suppress all normal output")
 
 	c.bindAllFlags(rootCmd)

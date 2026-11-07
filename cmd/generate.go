@@ -17,7 +17,7 @@ import (
 	"aqwari.net/xml/xsdgen"
 	"charm.land/log/v2"
 	"github.com/spf13/cobra"
-	"github.com/teghnet/x"
+	"github.com/tatenadev/x"
 )
 
 func newGenerateCmd(c *Cli) *cobra.Command {
